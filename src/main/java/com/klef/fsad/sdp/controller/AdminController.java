@@ -1,7 +1,6 @@
 package com.klef.fsad.sdp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +26,7 @@ public class AdminController
 		return "Full Stack SDP Project";
 	}
 	
-	@PostMapping("/verifyadminlogin")
+	@PostMapping("/login")
 	public ResponseEntity<?> checkadminlogin(@RequestBody Admin admin)
 	{
 		try
