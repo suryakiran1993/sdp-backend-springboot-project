@@ -14,6 +14,7 @@ public class Admin
    private String username;
    @Column(length = 50,nullable = false)
    private String password;
+   
    public String getUsername() {
 	return username;
    }

@@ -1,7 +1,6 @@
 package com.klef.fsad.sdp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.klef.fsad.sdp.entity.Admin;
 import com.klef.fsad.sdp.entity.Customer;
 import com.klef.fsad.sdp.service.CustomerService;
 

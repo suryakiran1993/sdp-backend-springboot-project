@@ -9,5 +9,5 @@ import com.klef.fsad.sdp.entity.Admin;
 public interface AdminRepository extends JpaRepository<Admin,String>
 { 
    // select a from Admin a where a.username=?1 and a.password=?1
-   public Admin findByUsernameAndPassword(String username, String password);
+   Admin findByUsernameAndPassword(String username, String password);
 }

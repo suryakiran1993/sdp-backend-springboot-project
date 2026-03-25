@@ -10,7 +10,7 @@ import com.klef.fsad.sdp.entity.Customer;
 import com.klef.fsad.sdp.entity.ServiceManager;
 import com.klef.fsad.sdp.repository.AdminRepository;
 import com.klef.fsad.sdp.repository.CustomerRepository;
-import com.klef.fsad.sdp.repository.ServiceManagerRepository;
+import com.klef.fsad.sdp.repository.ManagerRepository;
 
 @Service
 public class AdminServiceImpl implements AdminService
@@ -19,7 +19,7 @@ public class AdminServiceImpl implements AdminService
 	private AdminRepository adminRepository;
 	
 	@Autowired
-	private ServiceManagerRepository managerRepository;
+	private ManagerRepository managerRepository;
 	
 	@Autowired
 	private CustomerRepository customerRepository;

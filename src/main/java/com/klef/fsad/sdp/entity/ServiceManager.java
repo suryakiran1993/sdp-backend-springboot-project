@@ -43,6 +43,7 @@ public class ServiceManager
    @CreationTimestamp
    @Column(updatable=false) // Prevents updating this value later
    private LocalDateTime registeredAt;
+   
    public int getId() {
 	return id;
    }
