@@ -49,7 +49,7 @@ public class CustomerController
 		
 		    if(c!=null)
 		    {
-		    	return ResponseEntity.status(200).body(customer);
+		    	return ResponseEntity.status(200).body(c);
 		    }
 		    else
 		    {
@@ -60,6 +60,20 @@ public class CustomerController
 		{
 			return ResponseEntity.status(500).body("Internal Server Error");
 		}
+   }
+   
+   @PostMapping("/updateprofile")
+   public ResponseEntity<String> customerupdateprofile(@RequestBody Customer c)
+   {
+	   try
+	   {
+		   String output = customerService.updateCustomerProfile(c);
+		   return ResponseEntity.status(201).body(output);
+	   }
+	   catch(Exception e)
+	   {
+		   return ResponseEntity.status(500).body("Internal Server Error");
+	   }
    }
    
    
