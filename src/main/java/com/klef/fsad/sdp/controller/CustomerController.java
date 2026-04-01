@@ -1,5 +1,7 @@
 package com.klef.fsad.sdp.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,6 +19,10 @@ import com.klef.fsad.sdp.service.CustomerService;
 @CrossOrigin("*")
 public class CustomerController 
 {
+	// SLF4J - Simple Logging Facade for Java
+	
+   private static final Logger log = LoggerFactory.getLogger(CustomerController.class); 
+   
    @Autowired
    private CustomerService customerService;
   
@@ -40,7 +46,7 @@ public class CustomerController
 	   }
    }
    
-   @PostMapping("login")
+/*   @PostMapping("login")
    public ResponseEntity<?> verifycustomerlogin(@RequestBody Customer customer)
    {
 	   try
@@ -61,6 +67,7 @@ public class CustomerController
 			return ResponseEntity.status(500).body("Internal Server Error");
 		}
    }
+*/   
    
    @PostMapping("/updateprofile")
    public ResponseEntity<String> customerupdateprofile(@RequestBody Customer c)
@@ -77,5 +84,15 @@ public class CustomerController
    }
    
    
+   @GetMapping("/logdemo")
+   public String logDemo()
+   {
+	   log.info("Log Information");
+	   log.warn("Log Warning");
+	   log.error("Log Error");
+	   log.debug("Log Debug");
+	   
+	   return "Logging Demo using SLF4";
+   }
    
 }

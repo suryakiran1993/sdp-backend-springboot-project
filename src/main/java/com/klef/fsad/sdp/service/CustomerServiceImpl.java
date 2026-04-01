@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.klef.fsad.sdp.entity.Booking;
 import com.klef.fsad.sdp.entity.Customer;
-import com.klef.fsad.sdp.repository.BookingRepository;
 import com.klef.fsad.sdp.repository.CustomerRepository;
 
 @Service
@@ -16,9 +16,9 @@ public class CustomerServiceImpl implements CustomerService
 {
 	 @Autowired
      private CustomerRepository customerRepository;
-	 
+
 	 @Autowired
-	 private BookingRepository bookingRepository;
+	 private PasswordEncoder passwordEncoder; 
 	
 	@Override
 	public Customer verifyCustomerLogin(String email, String pwd) 
@@ -27,33 +27,42 @@ public class CustomerServiceImpl implements CustomerService
 	}
 
 	@Override
-	public String updateCustomerProfile(Customer customer) 
+    public String updateCustomerProfile(Customer customer) 
 	{
-		Optional<Customer> optional = customerRepository.findById(customer.getId());
-		
-		if(optional.isPresent())
-		{
-			Customer c = optional.get();
-			
-			c.setContact(customer.getContact());
-			c.setLocation(customer.getLocation());
-			c.setName(customer.getName());
-			c.setPassword(customer.getPassword());
-			
-			return "Customer Profile Updated Successfully";
-		}
-		else
-		{
-			return "Customer ID Not Found to Update";
-		}
-	}
+        Optional<Customer> optional = customerRepository.findById(customer.getId());
+
+        if (optional.isPresent()) {
+            Customer c = optional.get();
+
+            c.setContact(customer.getContact());
+            c.setLocation(customer.getLocation());
+            c.setName(customer.getName());
+
+            // If password is being updated, encode it
+            if (customer.getPassword() != null && !customer.getPassword().isEmpty()) 
+            {
+                c.setPassword(passwordEncoder.encode(customer.getPassword()));
+            }
+
+            customerRepository.save(c);
+            return "Customer Profile Updated Successfully";
+        } 
+        else 
+        {
+            return "Customer ID Not Found to Update";
+        }
+    }
 
 	@Override
-	public String customerRegistration(Customer customer) 
-	{
-		customerRepository.save(customer);
-		return "Customer Registered Successfully";
-	}
+    public String customerRegistration(Customer customer) 
+	{    
+        // IMPORTANT: Encrypt password before saving
+        String encodedPassword = passwordEncoder.encode(customer.getPassword());
+        customer.setPassword(encodedPassword);
+
+        customerRepository.save(customer);
+        return "Customer Registered Successfully";
+    }
 
 	@Override
 	public String BookService(Booking booking) 

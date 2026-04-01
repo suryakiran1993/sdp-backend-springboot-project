@@ -1,6 +1,7 @@
 package com.klef.fsad.sdp.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,6 +19,7 @@ public interface CustomerRepository extends JpaRepository<Customer,Integer>
 	// SELECT c FROM Customer c WHERE c.email=?1 AND c.password=?2
     Customer findByEmailAndPassword(String email,String password);
     
+     
     // JPQL SELECT Query
     @Query("SELECT c FROM Customer c WHERE c.email=?1 AND c.password=?2")
     Customer checkLogin(String email,String pwd);
@@ -26,7 +28,7 @@ public interface CustomerRepository extends JpaRepository<Customer,Integer>
 
     // Derived Method
     // JPQL : SELECT c FROM Customer c WHERE c.email=?1
-    Customer findByEmail(String email);
+    Optional<Customer> findByEmail(String email);
 
     // JPQL SELECT Query
     @Query("SELECT c FROM Customer c WHERE c.email=?1")

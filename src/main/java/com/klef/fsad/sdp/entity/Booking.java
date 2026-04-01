@@ -1,11 +1,10 @@
 package com.klef.fsad.sdp.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="booking_table")
@@ -40,6 +39,16 @@ public class Booking
 	@Column(length = 100,nullable = false)
 	private String status;
 
+	// Automatically set when booking is created
+	@CreationTimestamp
+	@Column(updatable = false)  // Prevents updating this value later
+	private LocalDateTime bookedAt;
+
+	// Automatically updated when status (or any field) changes
+	@UpdateTimestamp
+	private LocalDateTime statusUpdatedAt;
+
+	
 	public int getId() {
 		return id;
 	}
@@ -110,5 +119,13 @@ public class Booking
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public LocalDateTime getBookedAt() {
+		return bookedAt;
+	}
+
+	public LocalDateTime getStatusUpdatedAt() {
+		return statusUpdatedAt;
 	}
 }

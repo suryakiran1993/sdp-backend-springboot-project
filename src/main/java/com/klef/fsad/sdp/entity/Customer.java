@@ -26,7 +26,7 @@ public class Customer
    private String email;
    @Column(nullable = false,length = 50,unique = true)
    private String username;
-   @Column(nullable = false,length = 50)
+   @Column(nullable = false)
    private String password;
    @Column(nullable = false,length = 20,unique = true)
    private String contact;
