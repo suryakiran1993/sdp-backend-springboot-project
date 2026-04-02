@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import com.klef.fsad.sdp.service.UserService;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin
 public class UserController 
 {
     @Autowired
@@ -35,7 +37,6 @@ public class UserController
             String role = userDetails.getAuthorities()
                     .iterator().next().getAuthority();
 
-            // 🔥 Check role matches (case-insensitive)
             if (!role.equalsIgnoreCase(request.getRole()))
             {
                 return ResponseEntity.status(403).body("Invalid Role");
@@ -43,26 +44,22 @@ public class UserController
 
             boolean isValid = false;
 
-            // CASE 1: ADMIN (No encoding)
+            // ADMIN (plain check)
             if (role.equalsIgnoreCase("ADMIN"))
             {
                 isValid = request.getPassword().equals(userDetails.getPassword());
             }
-
-            // CASE 2: CUSTOMER or MANAGER (BCrypt)
+            // CUSTOMER / MANAGER (BCrypt)
             else if (role.equalsIgnoreCase("CUSTOMER") || role.equalsIgnoreCase("MANAGER"))
             {
                 BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
                 isValid = encoder.matches(request.getPassword(), userDetails.getPassword());
             }
-
-            // CASE 3: Invalid role
             else
             {
                 return ResponseEntity.status(403).body("Invalid Role Type");
             }
 
-            // If password mismatch
             if (!isValid)
             {
                 return ResponseEntity.status(401).body("Login Invalid");
@@ -71,16 +68,21 @@ public class UserController
             // Generate JWT
             String token = jwtUtil.generateToken(userDetails);
 
+            // Fetch full user object
+            Object userObj = service.getUserByLogin(request.getLogin());
+
+            // RETURN user also
             return ResponseEntity.ok(
                 Map.of(
                     "token", token,
-                    "role", role
+                    "role", role,
+                    "user", userObj   
                 )
             );
         } 
         catch (Exception e) 
         {
-            e.printStackTrace(); // for debugging
+            e.printStackTrace();
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }

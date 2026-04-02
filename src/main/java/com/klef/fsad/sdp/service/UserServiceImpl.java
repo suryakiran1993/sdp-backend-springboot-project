@@ -69,4 +69,29 @@ public class UserServiceImpl implements UserService
 
         throw new UsernameNotFoundException("User not found with input: " + input);
     }
+
+	@Override
+	public Object getUserByLogin(String input) 
+	{
+		 Optional<Admin> adminOpt = adminRepo.findById(input);
+		 
+	        if (adminOpt.isPresent()) 
+	        {
+	            return adminOpt.get();
+	        }
+
+	        Optional<Customer> customerOpt = customerRepo.findByEmail(input);
+	        if (customerOpt.isPresent()) 
+	        {
+	            return customerOpt.get();
+	        }
+
+	        Optional<ServiceManager> managerOpt = managerRepo.findByManageremail(input);
+	        if (managerOpt.isPresent()) 
+	        {
+	            return managerOpt.get();
+	        }
+
+	        return null;
+	    }
 }
