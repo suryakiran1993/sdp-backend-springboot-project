@@ -9,13 +9,22 @@ import org.springframework.stereotype.Service;
 
 import com.klef.fsad.sdp.entity.Booking;
 import com.klef.fsad.sdp.entity.Customer;
+import com.klef.fsad.sdp.entity.ServiceDetails;
+import com.klef.fsad.sdp.repository.BookingRepository;
 import com.klef.fsad.sdp.repository.CustomerRepository;
+import com.klef.fsad.sdp.repository.ServiceDetailsRepository;
 
 @Service
 public class CustomerServiceImpl implements CustomerService
 {
 	 @Autowired
      private CustomerRepository customerRepository;
+	 
+	 @Autowired
+	 private BookingRepository bookingRepository;
+	 
+	 @Autowired
+	 private ServiceDetailsRepository serviceDetailsRepository;
 
 	 @Autowired
 	 private PasswordEncoder passwordEncoder; 
@@ -67,15 +76,35 @@ public class CustomerServiceImpl implements CustomerService
 	@Override
 	public String BookService(Booking booking) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		int bookingid = (int) (Math.random()*999999+1);
+		
+		booking.setId(bookingid);
+
+	    bookingRepository.save(booking);
+
+	    return "Service Booked Successfully";
 	}
 
 	@Override
 	public List<Booking> viewBookingsByCustomer(int customerid) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Customer customer = customerRepository.findById(customerid).orElse(null);
+
+	    if(customer != null)
+	    {
+	        return bookingRepository.findAll()
+	                .stream()
+	                .filter(b -> b.getCustomer().getId() == customerid)
+	                .toList();
+	    }
+
+	    return null;
+	}
+
+	@Override
+	public List<ServiceDetails> viewAllServiceDetails() 
+	{
+		return serviceDetailsRepository.findAll();
 	}
 
 }

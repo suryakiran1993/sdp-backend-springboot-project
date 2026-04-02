@@ -29,7 +29,7 @@ public class JwtUtil
                 .setSubject(userDetails.getUsername())
                 .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 10))
                 .setId(UUID.randomUUID().toString())           // Makes every token unique
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
