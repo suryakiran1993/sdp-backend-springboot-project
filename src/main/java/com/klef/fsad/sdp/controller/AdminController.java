@@ -3,6 +3,7 @@ package com.klef.fsad.sdp.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -80,7 +81,18 @@ public class AdminController
 	        List<ServiceManager> managers = adminService.viewAllServiceManagers();
 	        //return ResponseEntity.status(200).body(managers);
 	        
-	        return ResponseEntity.ok(managers);
+	        //return ResponseEntity.ok(managers);
+	        
+	        if(managers.size()>0)
+	        {
+	           return ResponseEntity.status(HttpStatus.OK).body(managers);   	
+	        }
+	        else
+	        {
+	        	//return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No Data Found");
+	        	//return ResponseEntity.status(204).body("No Data Found");
+	        	return ResponseEntity.noContent().build();
+	        }
 	        
 	    }
 	    catch(Exception e)
@@ -126,6 +138,8 @@ public class AdminController
 	    }
 	}
 	
+	
+	
 	@GetMapping("/viewallcustomers")
 	public ResponseEntity<?> viewAllCustomers()
 	{
@@ -135,13 +149,15 @@ public class AdminController
 	        if(customers.size()>0)
 	        return ResponseEntity.ok(customers);
 	        else
-	        return ResponseEntity.noContent().build(); // 204 - non content
+	        return ResponseEntity.noContent().build(); // 204 - no content
 	    }
 	    catch(Exception e)
 	    {
 	        return ResponseEntity.status(500).body("Error Fetching Customers");
 	    }
 	}
+	
+	
 	
 	@GetMapping("/displayallcustomersdto")
 	public ResponseEntity<?> displayallcustomersDTO()

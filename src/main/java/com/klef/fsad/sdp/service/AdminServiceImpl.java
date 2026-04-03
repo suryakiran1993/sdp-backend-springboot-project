@@ -11,6 +11,7 @@ import com.klef.fsad.sdp.dto.CustomerDTO;
 import com.klef.fsad.sdp.entity.Admin;
 import com.klef.fsad.sdp.entity.Customer;
 import com.klef.fsad.sdp.entity.ServiceManager;
+import com.klef.fsad.sdp.exception.ResourceNotFoundException;
 import com.klef.fsad.sdp.repository.AdminRepository;
 import com.klef.fsad.sdp.repository.CustomerRepository;
 import com.klef.fsad.sdp.repository.ManagerRepository;
@@ -56,21 +57,45 @@ public class AdminServiceImpl implements AdminService
 		return managerRepository.findAll();
 	}
 
+//	@Override
+//	public List<Customer> viewAllCustomers() 
+//	{
+//		return customerRepository.findAll();
+//	}
+	
 	@Override
 	public List<Customer> viewAllCustomers() 
 	{
-		return customerRepository.findAll();
+	    List<Customer> customers = customerRepository.findAll();
+
+	    if (customers.isEmpty()) 
+	    {
+	        throw new ResourceNotFoundException("No Customers Found");
+	    }
+
+	    return customers;
 	}
 
+//	@Override
+//	public boolean deleteServiceManager(int id) 
+//	{
+//		if(managerRepository.existsById(id))
+//		{
+//			managerRepository.deleteById(id);
+//			return true;
+//		}
+//		return false;
+//	}
+	
 	@Override
 	public boolean deleteServiceManager(int id) 
 	{
-		if(managerRepository.existsById(id))
-		{
-			managerRepository.deleteById(id);
-			return true;
-		}
-		return false;
+	    ServiceManager manager = managerRepository.findById(id)
+	            .orElseThrow(() -> new ResourceNotFoundException("Service Manager Not Found"));
+
+	    managerRepository.delete(manager);
+
+	    return true;
 	}
 	
 	@Override
