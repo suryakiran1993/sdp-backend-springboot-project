@@ -5,6 +5,7 @@ import java.util.List;
 import com.klef.fsad.sdp.dto.CustomerDTO;
 import com.klef.fsad.sdp.entity.Admin;
 import com.klef.fsad.sdp.entity.Customer;
+import com.klef.fsad.sdp.entity.Product;
 import com.klef.fsad.sdp.entity.ServiceManager;
 
 public interface AdminService 
@@ -23,5 +24,10 @@ public interface AdminService
   public CustomerDTO CustomerToCustomerDTO(Customer c);
   public List<CustomerDTO> displayAllCustomersDTO();
   
+  
+  public String addProduct(Product product);
+  public List<Product> viewallProducts();
+  public List<Product> viewProductsByCategory(String category);
+  public Product viewProductById(int pid);
 } 
  

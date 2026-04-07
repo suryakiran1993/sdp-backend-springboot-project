@@ -10,11 +10,13 @@ import org.springframework.stereotype.Service;
 import com.klef.fsad.sdp.dto.CustomerDTO;
 import com.klef.fsad.sdp.entity.Admin;
 import com.klef.fsad.sdp.entity.Customer;
+import com.klef.fsad.sdp.entity.Product;
 import com.klef.fsad.sdp.entity.ServiceManager;
 import com.klef.fsad.sdp.exception.ResourceNotFoundException;
 import com.klef.fsad.sdp.repository.AdminRepository;
 import com.klef.fsad.sdp.repository.CustomerRepository;
 import com.klef.fsad.sdp.repository.ManagerRepository;
+import com.klef.fsad.sdp.repository.ProductRepository;
 
 @Service
 public class AdminServiceImpl implements AdminService
@@ -130,6 +132,32 @@ public class AdminServiceImpl implements AdminService
                 .collect(Collectors.toList());
 	}
 
-	
+	@Autowired
+	private ProductRepository productRepository;
+
+	@Override
+	public String addProduct(Product product) 
+	{
+	   productRepository.save(product);
+	   return "Product Added Successfully";
+	}
+
+	@Override
+	public List<Product> viewallProducts() 
+	{
+	    return productRepository.findAll();
+	}
+
+	@Override
+	public List<Product> viewProductsByCategory(String category) 
+	{
+		return productRepository.findByCategory(category);
+	}
+
+	@Override
+	public Product viewProductById(int pid) 
+	{
+		 return productRepository.findById(pid).orElse(null);
+	}
 
 }

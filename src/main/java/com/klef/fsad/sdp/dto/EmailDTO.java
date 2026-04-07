@@ -39,4 +39,10 @@ public class EmailDTO
   public void setContact(String contact) {
 	this.contact = contact;
   }
+
+  @Override
+  public String toString() {
+	return "EmailDTO [fullname=" + fullname + ", subject=" + subject + ", message=" + message + ", receiveremail="
+			+ receiveremail + ", contact=" + contact + "]";
+  }
 }
