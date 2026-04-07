@@ -19,7 +19,7 @@ import com.klef.fsad.sdp.service.UserService;
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin
-public class UserController 
+public class AuthController 
 {
     @Autowired
     private UserService service;

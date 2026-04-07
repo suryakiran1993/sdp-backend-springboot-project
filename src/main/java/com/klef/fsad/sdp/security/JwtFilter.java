@@ -1,11 +1,7 @@
 package com.klef.fsad.sdp.security;
 
 import java.io.IOException;
-
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +12,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.klef.fsad.sdp.service.UserService;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter 
@@ -33,19 +34,27 @@ public class JwtFilter extends OncePerRequestFilter
     {
         String path = request.getServletPath();
 
-        // Skip authentication for auth endpoints and Swagger
-        if (path.startsWith("/auth") ||
-            path.startsWith("/swagger-ui") ||
-            path.startsWith("/v3/api-docs") ||
-            path.equals("/swagger-ui.html") ||
-            path.equals("/customerapi/registration")) 
+     // Public endpoints (no authentication required)
+        List<String> publicPaths = List.of(
+                "/auth",
+                "/swagger-ui",
+                "/v3/api-docs",
+                "/swagger-ui.html",
+                "/customerapi/registration",
+                "/demoapi"
+        );
+
+        boolean isPublic = publicPaths.stream()
+                .anyMatch(path::startsWith);
+
+        if (isPublic) 
         {
             chain.doFilter(request, response);
             return;
         }
 
         String header = request.getHeader("Authorization");
-        System.out.println(header);
+        System.out.println("Token Header="+header);
 
         if (header == null || !header.startsWith("Bearer ")) 
         {

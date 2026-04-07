@@ -46,10 +46,10 @@ public class SecurityConfig
                     "/v3/api-docs/**",
                     "/swagger-ui.html",
                     "/auth/**",
-                    "/customerapi/registration"
+                    "/customerapi/registration",
+                    "/demoapi/**"
                 ).permitAll()
 
-               
                 .requestMatchers("/adminapi/**").hasAuthority("ADMIN")
                 .requestMatchers("/customerapi/**").hasAuthority("CUSTOMER")
                 .requestMatchers("/managerapi/**").hasAuthority("MANAGER")
